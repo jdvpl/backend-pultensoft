@@ -5,7 +5,7 @@ const admin=require("firebase-admin");
 const router = new Router();
 
 admin.initializeApp({
-    credential: admin.credential.cert("./credentials.json"),
+    credential: admin.credential.applicationDefault(),
     databaseURL: "https://pultemsoft.firebaseio.com",
   });
   
