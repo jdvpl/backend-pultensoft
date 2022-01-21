@@ -1,0 +1,39 @@
+[debug] [2022-01-21T05:10:48.345Z] ----------------------------------------------------------------------
+[debug] [2022-01-21T05:10:48.352Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\jdvpl\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve
+[debug] [2022-01-21T05:10:48.353Z] CLI Version:   9.23.1
+[debug] [2022-01-21T05:10:48.353Z] Platform:      win32
+[debug] [2022-01-21T05:10:48.353Z] Node Version:  v14.18.1
+[debug] [2022-01-21T05:10:48.356Z] Time:          Fri Jan 21 2022 00:10:48 GMT-0500 (hora estándar de Colombia)
+[debug] [2022-01-21T05:10:48.356Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-01-21T05:10:48.452Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-01-21T05:10:48.452Z] > authorizing via signed-in user (juanda554242@gmail.com)
+[debug] [2022-01-21T05:10:48.452Z] [iam] checking project pultemsoft for permissions ["firebase.projects.get"]
+[debug] [2022-01-21T05:10:48.454Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2022-01-21T05:10:48.454Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2022-01-21T05:10:48.673Z] <<< HTTP RESPONSE 200 {"cache-control":"no-cache, no-store, max-age=0, must-revalidate","pragma":"no-cache","expires":"Mon, 01 Jan 1990 00:00:00 GMT","date":"Fri, 21 Jan 2022 05:10:48 GMT","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-01-21T05:10:48.692Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/pultemsoft:testIamPermissions  
+ {"permissions":["firebase.projects.get"]}
+[debug] [2022-01-21T05:10:49.244Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Fri, 21 Jan 2022 05:10:49 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=423","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-01-21T05:10:49.245Z] [iam] error while checking permissions, command may fail: FirebaseError: Authorization failed. This account is missing the following required permissions on project pultemsoft:
+
+  firebase.projects.get
+[debug] [2022-01-21T05:10:49.246Z] > refreshing access token with scopes: []
+[debug] [2022-01-21T05:10:49.246Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2022-01-21T05:10:49.426Z] <<< HTTP RESPONSE 200 {"pragma":"no-cache","cache-control":"no-cache, no-store, max-age=0, must-revalidate","date":"Fri, 21 Jan 2022 05:10:49 GMT","expires":"Mon, 01 Jan 1990 00:00:00 GMT","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-01-21T05:10:49.449Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/pultemsoft [none]
+[debug] [2022-01-21T05:10:49.778Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/pultemsoft 403
+[debug] [2022-01-21T05:10:49.778Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/pultemsoft {"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}}
+[debug] [2022-01-21T05:10:49.779Z] HTTP Error: 403, The caller does not have permission
+[debug] [2022-01-21T05:10:49.954Z] FirebaseError: HTTP Error: 403, The caller does not have permission
+    at module.exports (C:\Users\jdvpl\AppData\Roaming\npm\node_modules\firebase-tools\lib\responseToError.js:38:12)
+    at Client.doRequest (C:\Users\jdvpl\AppData\Roaming\npm\node_modules\firebase-tools\lib\apiv2.js:241:23)
+    at processTicksAndRejections (internal/process/task_queues.js:95:5)
+    at async Client.request (C:\Users\jdvpl\AppData\Roaming\npm\node_modules\firebase-tools\lib\apiv2.js:96:20)
+    at async Object.getFirebaseProject (C:\Users\jdvpl\AppData\Roaming\npm\node_modules\firebase-tools\lib\management\projects.js:290:21)
+    at async needProjectNumber (C:\Users\jdvpl\AppData\Roaming\npm\node_modules\firebase-tools\lib\projectUtils.js:46:22)
+    at async C:\Users\jdvpl\AppData\Roaming\npm\node_modules\firebase-tools\lib\command.js:188:17
+[error] 
+[error] Error: Failed to get Firebase project pultemsoft. Please make sure the project exists and your account has permission to access it.
