@@ -1,14 +1,10 @@
 const functions = require("firebase-functions");
 const express=require("express");
-
+const cors = require('cors');
 const app=express();
 
-
-
-app.get("/hola", (req, res)=>{
-  return res.status(200).json({message: "Api rest con node y firebase"});
-});
-
+// Automatically allow cross-origin requests
+app.use(cors({ origin: true }));
 app.use(require('./routes/users'))
 
 

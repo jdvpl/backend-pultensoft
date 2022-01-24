@@ -1,8 +1,8 @@
 
 const { Router }=require('express');
 const admin=require("firebase-admin");
-
 const router = new Router();
+
 
 admin.initializeApp({
     credential: admin.credential.applicationDefault(),
@@ -16,6 +16,7 @@ router.post("/api/users", async(req, res) => {
        const ref=await db.doc()
        const id=ref.id;
        req.body.id=id;
+       req.body.created_At=Date.now();
        await ref.set(req.body);
 
        res.status(200).json({msg: `se agrego correctamente el usuario con id: ${id}`})
@@ -52,7 +53,7 @@ router.get("/api/users",async(req, res)=>{
         return res.status(500).send(error)
     }
 });
-// elete
+// delete
 router.delete("/api/user/:id", async(req, res)=>{
     try {
         const id=req.params.id;
@@ -70,8 +71,9 @@ router.put("/api/user/:id", async(req, res)=>{
         const id=req.params.id;
         const document= db.doc(req.params.id);
         req.body.id=id;
+        req.body.updated_At=Date.now()
         await document.update(req.body)
-        return res.status(200).json({msg: "Se actualizo correctamente el usuario "+req.body.nombre})
+        return res.status(200).json({msg: "Se actualizo correctamente el usuario con id: "+id})
     } catch (error) {
         console.log(error);
         return res.status(500).send(error)
