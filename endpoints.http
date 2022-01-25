@@ -5,11 +5,11 @@ POST http://localhost:5000/pultemsoft/us-central1/app/api/users HTTP/1.1
 Content-Type: application/json
 
 {
-    "name":"Juan Daniel",
-    "lat":4.6676,
-    "lon":-74.5618,
-    "eps":"lol",
-    "document":"1077870326"
+    "name":"Juan Daniel Amado",
+    "lat":4.6778042,
+    "lng":-74.0930114,
+    "eps":"Sanita",
+    "document":"1077870327"
     
 }
 

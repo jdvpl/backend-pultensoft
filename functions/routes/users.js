@@ -2,6 +2,8 @@
 const { Router }=require('express');
 const admin=require("firebase-admin");
 const router = new Router();
+const geohashEncode=require('ngeohash')
+
 
 
 admin.initializeApp({
@@ -13,13 +15,32 @@ admin.initializeApp({
 // crear usuario
 router.post("/api/users", async(req, res) => {
     try {
-       const ref=await db.doc()
-       const id=ref.id;
-       req.body.id=id;
-       req.body.created_At=Date.now();
-       await ref.set(req.body);
 
-       res.status(200).json({msg: `se agrego correctamente el usuario con id: ${id}`})
+        const document=req.body.document;
+        const querySnapshot=await db.where("document", "==", document).get();
+        const cantidad=querySnapshot.docs.length;
+
+        if(cantidad>0){
+            res.status(500).json({msg: `El documento ${document} ya existe.`})
+        }else{
+            const ref=await db.doc()
+            const id=ref.id;
+            req.body.id=id;
+            const lat=req.body.lat;
+            const lng=req.body.lng;
+            const geoh=geohashEncode.encode(4.6778042, -74.0930114);
+            const location=new admin.firestore.GeoPoint(lat,lng)
+            const position ={
+                "location":location,
+                "geohash": geoh
+                };
+            req.body.position=position;  
+            req.body.created_At=Date.now();
+            delete req.body.lat;
+            delete req.body.lng;
+            await ref.set(req.body);
+            res.status(200).json({msg: `se agrego correctamente el usuario con id: ${id}`})
+        }
     } catch (error) {
         console.log(error)
         return res.status(500).send(error)
@@ -28,17 +49,34 @@ router.post("/api/users", async(req, res) => {
 // crear usuario por id 
 router.post("/api/adduser", async(req, res) => {
     try {
-       const ref=await db.doc(req.body.id)
-       req.body.created_At=Date.now();
-       await ref.set(req.body);
+        const document=req.body.document;
+        const querySnapshot=await db.where("document", "==", document).get();
+        const cantidad=querySnapshot.docs.length;
 
-       res.status(200).json({msg: `se agrego correctamente el usuario`})
+        if(cantidad>0){
+            res.status(500).json({msg: `El documento ${document} ya existe.`})
+        }else{
+            const ref=await db.doc(req.body.id)
+            const lat=req.body.lat;
+            const lng=req.body.lng;
+            const geoh=geohashEncode.encode(4.6778042, -74.0930114);
+            const location=new admin.firestore.GeoPoint(lat,lng)
+            const position ={
+                "location":location,
+                "geohash": geoh
+                };
+            req.body.position=position;  
+            req.body.created_At=Date.now();
+            delete req.body.lat;
+            delete req.body.lng;
+            await ref.set(req.body);
+            res.status(200).json({msg: `se agrego correctamente el usuario `})
+        }
     } catch (error) {
         console.log(error)
         return res.status(500).send(error)
     }
    });
-   
 // obtener usuario por id works
 router.get("/api/user/:id",(req,res)=>{
     (async ()=>{
@@ -58,8 +96,8 @@ router.get("/api/document/:doc",async(req,res)=>{
 
     try {
         const document=req.params.doc;
-        console.log(document)
         const querySnapshot=await db.where("document", "==", document).get();
+        const cantidad=querySnapshot.docs.length;
         const response=querySnapshot.docs.map(doc =>doc.data());
         return res.status(200).json(response)
         } catch (error) {
