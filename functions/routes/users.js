@@ -10,7 +10,7 @@ admin.initializeApp({
   });
   
   const db=admin.firestore().collection("users");
-// crear producto
+// crear usuario
 router.post("/api/users", async(req, res) => {
     try {
        const ref=await db.doc()
@@ -20,6 +20,19 @@ router.post("/api/users", async(req, res) => {
        await ref.set(req.body);
 
        res.status(200).json({msg: `se agrego correctamente el usuario con id: ${id}`})
+    } catch (error) {
+        console.log(error)
+        return res.status(500).send(error)
+    }
+   });
+// crear usuario por id 
+router.post("/api/adduser", async(req, res) => {
+    try {
+       const ref=await db.doc(req.body.id)
+       req.body.created_At=Date.now();
+       await ref.set(req.body);
+
+       res.status(200).json({msg: `se agrego correctamente el usuario`})
     } catch (error) {
         console.log(error)
         return res.status(500).send(error)
@@ -39,6 +52,21 @@ router.get("/api/user/:id",(req,res)=>{
             return res.status(500).send(error)
             }
     })();
+})
+// obtener usuario por documento
+router.get("/api/document/:doc",async(req,res)=>{
+
+    try {
+        const document=req.params.doc;
+        console.log(document)
+        const querySnapshot=await db.where("document", "==", document).get();
+        const response=querySnapshot.docs.map(doc =>doc.data());
+        return res.status(200).json(response)
+        } catch (error) {
+            console.log(error)
+            return res.status(500).send(error)
+        }
+
 })
 
 // obtener todos los usuarios
