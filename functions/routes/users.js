@@ -3,6 +3,8 @@ const { Router }=require('express');
 const admin=require("firebase-admin");
 const router = new Router();
 const geohashEncode=require('ngeohash')
+const {firebaseApp} =require( '../config/firebase-config');
+const {getAuth,createUserWithEmailAndPassword,onAuthStateChanged}=require('firebase/auth');
 
 
 
@@ -31,13 +33,11 @@ router.post("/api/users", async(req, res) => {
             const geoh=geohashEncode.encode(4.6778042, -74.0930114);
             const location=new admin.firestore.GeoPoint(lat,lng)
             const position ={
-                "location":location,
+                "geopoint":location,
                 "geohash": geoh
                 };
             req.body.position=position;  
             req.body.created_At=Date.now();
-            delete req.body.lat;
-            delete req.body.lng;
             await ref.set(req.body);
             res.status(200).json({msg: `se agrego correctamente el usuario con id: ${id}`})
         }
@@ -45,7 +45,56 @@ router.post("/api/users", async(req, res) => {
         console.log(error)
         return res.status(500).send(error)
     }
-   });
+});
+// registrar usuario
+router.post("/createUser", async(req, res) => {
+    try {
+        const document=req.body.document;
+        const querySnapshot=await db.where("document", "==", document).get();
+        const cantidad=querySnapshot.docs.length;
+
+        if(cantidad>0){
+            res.status(500).json({msg: `El documento ${document} ya existe.`})
+        }else{
+
+            const auth=getAuth(firebaseApp);
+            const email=req.body.email;
+            const pass=req.body.password;
+            const userData= await createUserWithEmailAndPassword(auth,email,pass).then(userData=>{
+                return userData;
+            }).catch(err=>{
+                console.log(err.code)
+                res.status(500).json({msg:err.code})
+            })
+            const id=userData.user.uid;
+            const ref=db.doc(id)
+            req.body.id=id;
+            const lat=req.body.lat;
+            const lng=req.body.lng;
+            const geoh=geohashEncode.encode(4.6778042, -74.0930114);
+            const location=new admin.firestore.GeoPoint(lat,lng)
+            const position ={
+                "geopoint":location,
+                "geohash": geoh
+                };
+            req.body.position=position;  
+            req.body.created_At=Date.now();
+            delete req.body.password;
+            await ref.set(req.body);
+
+            res.status(200).json({msg: `se agrego correctamente el usuario con id: ${id}`})
+            }
+
+
+   
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json(error)
+    }
+});
+
+
 // crear usuario por id 
 router.post("/api/adduser", async(req, res) => {
     try {
@@ -62,13 +111,11 @@ router.post("/api/adduser", async(req, res) => {
             const geoh=geohashEncode.encode(4.6778042, -74.0930114);
             const location=new admin.firestore.GeoPoint(lat,lng)
             const position ={
-                "location":location,
+                "geopoint":location,
                 "geohash": geoh
                 };
             req.body.position=position;  
             req.body.created_At=Date.now();
-            delete req.body.lat;
-            delete req.body.lng;
             await ref.set(req.body);
             res.status(200).json({msg: `se agrego correctamente el usuario `})
         }

@@ -9,7 +9,25 @@ Content-Type: application/json
     "lat":4.6778042,
     "lng":-74.0930114,
     "eps":"Sanita",
-    "document":"1077870327"
+    "document":"1077870327",
+    "password":"kakaroto",
+    "email":"jdsuarez623@misena.edu.co",
+    "illnesses":["Diabetes","migraña"]
+    
+}
+###
+POST http://localhost:5000/pultemsoft/us-central1/app/createUser HTTP/1.1
+Content-Type: application/json
+
+{
+    "name":"Juan Daniel Amado",
+    "lat":4.6778042,
+    "lng":-74.0930114,
+    "eps":"Sanita",
+    "document":"1077870327",
+    "password":"kakaroto",
+    "email":"jdsuarez623@misena.edu.co",
+    "illnesses":["Diabetes","migraña"]
     
 }
 
